@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>DHuts Draw</title>
+  </head>
+  <body>
+      <div class="controls">
+        <label for="penSize">Pen Size:</label>
+        <input id="penSize" type="range" name="penSize" min="2" max="50" value="15" >
+
+        <label for="eraser">Eraser:</label>
+        <input id="eraser" type="checkbox" name="eraser" >
+      
+        <label for="penColor">Pen Color:</label>
+        <input id="penColor" type="color" name="penColor" value="#02175a">
+      
+        <label for="base">Background Color</label>
+        <input id="base" type="color" name="base" value="#faf9e8">
+        
+      </div>
+    <!--The Canvas is the DOM object we use to draw onto instead of calling document-->
+    <canvas id="draw" width="800" height="800"></canvas>
+    <script>
+      const canvas = document.querySelector("#draw");
+      const ctx = canvas.getContext("2d");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      ctx.strokeStyle = "#02175a";
+      ctx.lineJoin = "round";
+      ctx.lineCap = "round";
+      ctx.lineWidth = 15;
+
+      let isDrawing = false;
+      let lastX = 0;
+      let lastY = 0;
+
+      function draw(e) {
+        if (!isDrawing) return; // stop the fn from runnning when user is not moused down
+        ctx.beginPath();
+        ctx.moveTo(lastX, lastY);
+        ctx.lineTo(e.offsetX, e.offsetY);
+        ctx.stroke();
+        [lastX, lastY] = [e.offsetX, e.offsetY]; //update the start of the drawing to the cursor current pos
+      }
+      canvas.addEventListener("mousemove", draw);
+      canvas.addEventListener("mousedown", (e) => {
+        [lastX, lastY] = [e.offsetX, e.offsetY]; //update the first stroke of the drawing to the cursor current pos
+        isDrawing = true;
+      });
+      canvas.addEventListener("mouseup", () => (isDrawing = false));
+      canvas.addEventListener("mouseout", () => (isDrawing = false));
+      
+      //Tool Controls
+      const inputs = document.querySelectorAll('.controls input');
+      function setPenSize() {
+        ctx.lineWidth= this.value;
+      }
+
+      function setPenColor() {
+        ctx.strokeStyle = this.value;
+      }
+      function setBaseColor() {
+        document.body.style.background = this.value;
+      }
+
+      function setEraser(e) {
+        console.log(e.value);
+        ctx.strokeStyle = document.body.style.background;
+      }
+
+      document.getElementById('penSize').addEventListener('change', setPenSize);
+      document.getElementById('penSize').addEventListener('mousemove', setPenSize);
+      document.getElementById('penColor').addEventListener('change', setPenColor);
+      document.getElementById('penColor').addEventListener('mousemove', setPenColor);
+      document.getElementById('base').addEventListener('change', setBaseColor);
+      document.getElementById('base').addEventListener('mousemove', setBaseColor);
+      document.getElementById('eraser').addEventListener('checked', setEraser);
+    </script>
+
+    <style>
+      html,
+      body {
+        margin: 0;
+      }
+      body {
+      text-align: center;
+      background: #faf9e8;
+      color: rgb(0, 0, 0);
+      font-family: 'helvetica neue', sans-serif;
+      font-weight: 100;
+      font-size: 50px;
+    }
+    </style>
+  </body>
+</html>
