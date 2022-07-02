@@ -9,8 +9,10 @@
         <label for="penSize">Pen Size:</label>
         <input id="penSize" type="range" name="penSize" min="2" max="50" value="15" >
 
-        <label for="eraser">Eraser:</label>
+        <!--
+          <label for="eraser">Eraser:</label>
         <input id="eraser" type="checkbox" name="eraser" >
+        -->
       
         <label for="penColor">Pen Color:</label>
         <input id="penColor" type="color" name="penColor" value="#02175a">
@@ -64,10 +66,10 @@
         document.body.style.background = this.value;
       }
 
-      function setEraser(e) {
+      /*function setEraser(e) {
         console.log(e.value);
         ctx.strokeStyle = document.body.style.background;
-      }
+      }*/
 
       document.getElementById('penSize').addEventListener('change', setPenSize);
       document.getElementById('penSize').addEventListener('mousemove', setPenSize);
@@ -75,7 +77,7 @@
       document.getElementById('penColor').addEventListener('mousemove', setPenColor);
       document.getElementById('base').addEventListener('change', setBaseColor);
       document.getElementById('base').addEventListener('mousemove', setBaseColor);
-      document.getElementById('eraser').addEventListener('checked', setEraser);
+      //TODO make an eraser: document.getElementById('eraser').addEventListener('checked', setEraser);
     </script>
 
     <style>
